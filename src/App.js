@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import ArbitrageTable from "./components/ArbitrageTable";
@@ -10,9 +9,33 @@ function App() {
 
   useEffect(() => {
     // Fetch opportunities from the Flask backend
-    axios.get("http://localhost:5000/arbitrage-opportunities")
-      .then((response) => setOpportunities(response.data))
-      .catch((error) => console.error("Error fetching data:", error));
+    const mockData = [
+      {
+        coin: "Bitcoin",
+        buyExchange: "Binance",
+        sellExchange: "Kraken",
+        buyPrice: 45000,
+        sellPrice: 46000,
+        profit: 1000,
+      },
+      {
+        coin: "Ethereum",
+        buyExchange: "Coinbase",
+        sellExchange: "Binance",
+        buyPrice: 3000,
+        sellPrice: 3200,
+        profit: 200,
+      },
+      {
+        coin: "Solana",
+        buyExchange: "KuCoin",
+        sellExchange: "OKX",
+        buyPrice: 20,
+        sellPrice: 22,
+        profit: 2,
+      },
+    ];
+    setOpportunities(mockData);
   }, []);
 
   const filteredOpportunities = opportunities.filter((o) =>
