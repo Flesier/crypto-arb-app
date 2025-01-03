@@ -4,39 +4,15 @@ import SearchBar from "./components/SearchBar";
 import ArbitrageTable from "./components/ArbitrageTable";
 
 function App() {
-  const [opportunities, setOpportunities] = useState([]);
+  const [opportunities] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    // Fetch opportunities from the Flask backend
-    const mockData = [
-      {
-        coin: "Bitcoin",
-        buyExchange: "Binance",
-        sellExchange: "Kraken",
-        buyPrice: 45000,
-        sellPrice: 46000,
-        profit: 1000,
-      },
-      {
-        coin: "Ethereum",
-        buyExchange: "Coinbase",
-        sellExchange: "Binance",
-        buyPrice: 3000,
-        sellPrice: 3200,
-        profit: 200,
-      },
-      {
-        coin: "Solana",
-        buyExchange: "KuCoin",
-        sellExchange: "OKX",
-        buyPrice: 20,
-        sellPrice: 22,
-        profit: 2,
-      },
-    ];
-    setOpportunities(mockData);
-  }, []);
+    fetch('http://localhost:5000/api/opportunities')
+        .then(response => response.json())
+        .then(data => setData(opportunities))
+        .catch(error => console.error('Error fetching data:', error));
+}, []);
 
   const filteredOpportunities = opportunities.filter((o) =>
     o.coin.toLowerCase().includes(searchQuery.toLowerCase())
