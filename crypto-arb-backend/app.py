@@ -15,7 +15,14 @@ def get_opportunities():
             'sellPrice': 51000,
             'profit': 1000
         },
-        # Add more opportunities as needed
+        {
+            'coin': 'Ethereum',
+            'buyExchange': 'Exchange C',
+            'sellExchange': 'Exchange D',
+            'buyPrice': 3000,
+            'sellPrice': 3200,
+            'profit': 200
+        }
     ]
     return jsonify(opportunities)
 
