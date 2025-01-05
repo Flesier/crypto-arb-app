@@ -10,7 +10,7 @@ function App() {
   useEffect(() => {
     const fetchCryptoData = async () => {
       try {
-        const response = await fetch('http://localhost:5000/arbitrage', {
+        const response = await fetch('http://localhost:5000/api/opportunities', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'
