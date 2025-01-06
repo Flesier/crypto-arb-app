@@ -11,7 +11,7 @@ const ArbitrageTable = ({ opportunities }) => {
                         <th className="p-2 border-b">Sell Exchange</th>
                         <th className="p-2 border-b">Buy Price</th>
                         <th className="p-2 border-b">Sell Price</th>
-                        <th className="p-2 border-b">Profit</th>
+                        <th className="p-2 border-b">Profit Got</th>
                     </tr>
                 </thead>
                 <tbody>
