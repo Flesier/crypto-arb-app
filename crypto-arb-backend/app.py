@@ -1,7 +1,13 @@
 import requests
 from flask import Flask, jsonify
+from flask_cors import CORS
+import logging
 
 app = Flask(__name__)
+CORS(app)
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
 
 # Fetch exchanges from CoinGecko
 def fetch_exchanges():
@@ -12,7 +18,7 @@ def fetch_exchanges():
         exchanges = response.json()
         return {exchange['id']: exchange['name'] for exchange in exchanges}
     except requests.exceptions.RequestException as e:
-        print(f"Error fetching exchanges: {e}")
+        logging.error(f"Error fetching exchanges: {e}")
         return {}
 
 # Fetch live market data
@@ -30,7 +36,7 @@ def fetch_market_data():
         response.raise_for_status()
         return response.json()
     except requests.exceptions.RequestException as e:
-        print(f"Error fetching market data: {e}")
+        logging.error(f"Error fetching market data: {e}")
         return []
 
 # Calculate arbitrage opportunities
@@ -38,29 +44,25 @@ def calculate_arbitrage(market_data, exchange_mapping):
     opportunities = []
     for coin in market_data:
         ticker_id = coin.get("id")
-        prices = coin.get("current_price", {})
-        if not prices:
+        current_price = coin.get("current_price")
+        if not current_price:
             continue
-
-        # Example logic: Find price differences between two random exchanges
-        buy_price = min(prices.values())
-        sell_price = max(prices.values())
-        if sell_price > buy_price:
-            opportunities.append({
-                "coin": coin.get("name"),
-                "buy_exchange": exchange_mapping.get(buy_price[0], "Unknown Exchange"),
-                "sell_exchange": exchange_mapping.get(sell_price[0], "Unknown Exchange"),
-                "buy_price": buy_price[1],
-                "sell_price": sell_price[1],
-                "profit": sell_price[1] - buy_price[1]
-            })
-
+        buy_price = current_price
+        sell_price = current_price * 1.02  # Placeholder logic
+        opportunities.append({
+            "coin": coin['name'],
+            "buy_exchange": exchange_mapping.get(ticker_id, "Unknown Exchange"),
+            "sell_exchange": exchange_mapping.get(ticker_id, "Unknown Exchange"),
+            "buy_price": buy_price,
+            "sell_price": sell_price,
+            "profit": sell_price - buy_price
+        })
     return opportunities
 
 # Get exchange mappings at startup
 EXCHANGE_MAPPING = fetch_exchanges()
 
-@app.route('/arbitrage', methods=['GET'])
+@app.route('/api/opportunities', methods=['GET'])
 def get_arbitrage_opportunities():
     market_data = fetch_market_data()
     arbitrage_opportunities = calculate_arbitrage(market_data, EXCHANGE_MAPPING)
