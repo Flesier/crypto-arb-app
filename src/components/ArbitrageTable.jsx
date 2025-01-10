@@ -5,18 +5,18 @@ const ArbitrageTable = ({ opportunities }) => {
         <div className="overflow-x-auto">
             <table className="min-w-full bg-white border border-gray-200">
                 <thead>
-                    <tr className="bg-gray-100">
+                    <tr className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white">
                         <th className="p-2 border-b">Coin</th>
                         <th className="p-2 border-b">Buy Exchange</th>
                         <th className="p-2 border-b">Sell Exchange</th>
                         <th className="p-2 border-b">Buy Price</th>
                         <th className="p-2 border-b">Sell Price</th>
-                        <th className="p-2 border-b">Profit Got</th>
+                        <th className="p-2 border-b">Profit</th>
                     </tr>
                 </thead>
                 <tbody>
                     {opportunities.map((opportunity, index) => (
-                        <tr key={index} className="hover:bg-gray-50">
+                        <tr key={index} className={`hover:bg-gray-50 ${index % 2 === 0 ? 'bg-gray-100' : 'bg-white'}`}>
                             <td className="p-2 text-center border-b">{opportunity.coin}</td>
                             <td className="p-2 text-center border-b">{opportunity.buyExchange}</td>
                             <td className="p-2 text-center border-b">{opportunity.sellExchange}</td>
